@@ -7,10 +7,12 @@
     <ProjectGuid>{BB7BFCB5-3DB0-49E1-802A-3CE3EECC59F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bot_Utils</RootNamespace>
+    <RootNamespace>BlubbFish.Utils.IoT.Bots</RootNamespace>
     <AssemblyName>Bot-Utils</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -40,8 +45,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Bot.cs" />
+    <Compile Include="Events\CronEvent.cs" />
+    <Compile Include="Events\ModulEventArgs.cs" />
+    <Compile Include="Events\SenmlEvent.cs" />
+    <Compile Include="Events\MqttEvent.cs" />
+    <Compile Include="Events\OvertakerEvent.cs" />
+    <Compile Include="Events\StatusPollingEvent.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Interfaces\IForceLoad.cs" />
+    <Compile Include="Moduls\AModul.cs" />
+    <Compile Include="Moduls\Mqtt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mono.Posix">
+      <Version>5.4.0.201</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Librarys\litjson\litjson\litjson_4.7.1.csproj">
+      <Project>{91a14cd2-2940-4500-8193-56d37edddbaa}</Project>
+      <Name>litjson_4.7.1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IoT\Utils-IoT.csproj">
+      <Project>{b870e4d5-6806-4a0b-b233-8907eedc5afc}</Project>
+      <Name>Utils-IoT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{fac8ce64-bf13-4ece-8097-aeb5dd060098}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
