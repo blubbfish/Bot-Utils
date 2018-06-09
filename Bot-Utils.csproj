@@ -55,7 +55,10 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IForceLoad.cs" />
     <Compile Include="Moduls\AModul.cs" />
+    <Compile Include="Moduls\CronJob.cs" />
     <Compile Include="Moduls\Mqtt.cs" />
+    <Compile Include="Moduls\Overtaker.cs" />
+    <Compile Include="Moduls\Statuspolling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
