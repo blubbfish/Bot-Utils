@@ -11,7 +11,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
   public abstract class Mqtt<T> : AModul<T>, IDisposable {
     protected readonly Thread connectionWatcher;
     protected ABackend mqtt;
-    protected Dictionary<String, Object> modules;
+    protected Dictionary<String, AModul<T>> modules;
 
     #region Constructor
     public Mqtt(T lib, InIReader settings) : base(lib, settings) {
@@ -45,7 +45,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     #endregion
 
     #region AModul
-    public override void Interconnect(Dictionary<String, Object> moduls) {
+    public override void Interconnect(Dictionary<String, AModul<T>> moduls) {
       this.modules = moduls;
     }
 
@@ -61,9 +61,9 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
           return new Tuple<Boolean, MqttEvent>(false, null);
         }
         AModul<T> modul = null;
-        foreach (KeyValuePair<String, Object> item in this.modules) {
+        foreach (KeyValuePair<String, AModul<T>> item in this.modules) {
           if (item.Key.ToLower() == m.Groups[1].Value) {
-            modul = ((AModul<T>)item.Value);
+            modul = item.Value;
           }
         }
         if (modul == null) {

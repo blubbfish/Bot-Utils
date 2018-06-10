@@ -45,7 +45,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       return new Dictionary<String, Dictionary<String, String>>();
     }
 
-    public virtual void Interconnect(Dictionary<String, Object> moduls) { }
+    public virtual void Interconnect(Dictionary<String, AModul<T>> moduls) { }
 
     public virtual void SetInterconnection(String param, Action<Object> hook, Object data) { }
 

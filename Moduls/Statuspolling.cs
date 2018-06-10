@@ -16,14 +16,14 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     #endregion
 
     #region AModul
-    public override void Interconnect(Dictionary<String, Object> moduls) {
-      foreach (KeyValuePair<String, Object> item in moduls) {
+    public override void Interconnect(Dictionary<String, AModul<T>> moduls) {
+      foreach (KeyValuePair<String, AModul<T>> item in moduls) {
         if (item.Value is CronJob<T>) {
-          ((AModul<T>)item.Value).SetInterconnection("0 0 * * *", new Action<Object>(this.PollAll), null);
+          item.Value.SetInterconnection("0 0 * * *", new Action<Object>(this.PollAll), null);
           if (this.config.Count != 0) {
             foreach (KeyValuePair<String, Dictionary<String, String>> section in this.config) {
               if (section.Value.ContainsKey("cron") && section.Value.ContainsKey("devices")) {
-                ((AModul<T>)item.Value).SetInterconnection(section.Value["cron"], new Action<Object>(this.PollSpecific), section.Value["devices"]);
+                item.Value.SetInterconnection(section.Value["cron"], new Action<Object>(this.PollSpecific), section.Value["devices"]);
               }
             }
           }

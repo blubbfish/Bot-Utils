@@ -7,11 +7,11 @@ using BlubbFish.Utils.IoT.Bots.Events;
 using BlubbFish.Utils.IoT.Bots.Interfaces;
 
 namespace BlubbFish.Utils.IoT.Bots {
-  public abstract class Bot {
+  public abstract class Bot<T> {
     private Thread sig_thread;
     private Boolean RunningProcess = true;
     protected ProgramLogger logger = new ProgramLogger();
-    protected readonly Dictionary<String, Object> moduls = new Dictionary<String, Object>();
+    protected readonly Dictionary<String, AModul<T>> moduls = new Dictionary<String, AModul<T>>();
 
     protected void WaitForShutdown() {
       if (Type.GetType("Mono.Runtime") != null) {
@@ -44,9 +44,9 @@ namespace BlubbFish.Utils.IoT.Bots {
       this.RunningProcess = false;
     }
 
-    protected void ModulDispose<T>() {
-      foreach (KeyValuePair<String, Object> item in this.moduls) {
-        ((AModul<T>)item.Value).Dispose();
+    protected void ModulDispose() {
+      foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
+        item.Value.Dispose();
         Console.WriteLine("Modul entladen: " + item.Key);
       }
       if (this.sig_thread != null && this.sig_thread.IsAlive) {
@@ -54,7 +54,7 @@ namespace BlubbFish.Utils.IoT.Bots {
       }
     }
 
-    protected void ModulLoader<T>(String @namespace, Object library) {
+    protected void ModulLoader(String @namespace, Object library) {
       Assembly asm = Assembly.GetEntryAssembly();
       foreach (Type item in asm.GetTypes()) {
         if (item.Namespace == @namespace) {
@@ -71,15 +71,15 @@ namespace BlubbFish.Utils.IoT.Bots {
       }
     }
 
-    protected void ModulInterconnect<T>() {
-      foreach (KeyValuePair<String, Object> item in this.moduls) {
-        ((AModul<T>)item.Value).Interconnect(this.moduls);
+    protected void ModulInterconnect() {
+      foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
+        item.Value.Interconnect(this.moduls);
       }
     }
 
-    protected void ModulEvents<T>() {
-      foreach (KeyValuePair<String, Object> item in this.moduls) {
-        ((AModul<T>)item.Value).Update += this.ModulUpdate;
+    protected void ModulEvents() {
+      foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
+        item.Value.Update += this.ModulUpdate;
       }
     }
 

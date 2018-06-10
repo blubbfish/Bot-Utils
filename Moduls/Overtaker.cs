@@ -59,7 +59,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     #endregion
 
     #region AModul
-    public override void Interconnect(Dictionary<String, Object> moduls) { }
+    public override void Interconnect(Dictionary<String, AModul<T>> moduls) { }
     protected override void UpdateConfig() {
       this.ParseIni();
     }
