@@ -27,6 +27,8 @@ namespace BlubbFish.Utils.IoT.Bots {
       if (prop.CanWrite) {
         if (prop.PropertyType == typeof(Boolean) && Boolean.TryParse(value, out Boolean vb)) {
           prop.SetValue(o, vb);
+        } else if (prop.PropertyType == typeof(Byte) && Byte.TryParse(value, out Byte v8)) {
+          prop.SetValue(o, v8);
         } else if (prop.PropertyType == typeof(Int32) && Int32.TryParse(value, out Int32 v32)) {
           prop.SetValue(o, v32);
         } else if (prop.PropertyType == typeof(Single) && Single.TryParse(value, out Single vs)) {
@@ -35,6 +37,10 @@ namespace BlubbFish.Utils.IoT.Bots {
           prop.SetValue(o, vd);
         } else if (prop.PropertyType == typeof(Int64) && Int64.TryParse(value, out Int64 v64)) {
           prop.SetValue(o, v64);
+        } else if (prop.PropertyType.BaseType == typeof(Enum)) {
+          try {
+            prop.SetValue(o, Enum.Parse(prop.PropertyType, value));
+          } catch (Exception) { }
         }
       }
     }
