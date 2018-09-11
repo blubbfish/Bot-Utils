@@ -79,6 +79,7 @@ namespace BlubbFish.Utils.IoT.Bots {
 
     protected void ModulEvents() {
       foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
+        item.Value.EventLibSetter();
         item.Value.Update += this.ModulUpdate;
       }
     }

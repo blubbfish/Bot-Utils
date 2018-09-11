@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using BlubbFish.Utils.IoT.Bots.Events;
 
 namespace BlubbFish.Utils.IoT.Bots.Moduls {
@@ -48,6 +49,14 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     public virtual void Interconnect(Dictionary<String, AModul<T>> moduls) { }
 
     public virtual void SetInterconnection(String param, Action<Object> hook, Object data) { }
+
+    public abstract void EventLibSetter();
+
+    protected abstract void LibUpadteThread(Object state);
+
+    protected void HandleLibUpdate(Object sender, EventArgs e) {
+      ThreadPool.QueueUserWorkItem(this.LibUpadteThread, e);
+    }
 
     public abstract void Dispose();
 
