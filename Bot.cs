@@ -20,10 +20,10 @@ namespace BlubbFish.Utils.IoT.Bots {
             new Mono.Unix.UnixSignal(Mono.Unix.Native.Signum.SIGTERM),
             new Mono.Unix.UnixSignal(Mono.Unix.Native.Signum.SIGINT)
           };
-          Console.WriteLine("Signalhandler Mono attached.");
+          Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Signalhandler Mono attached.");
           while (true) {
             Int32 i = Mono.Unix.UnixSignal.WaitAny(signals, -1);
-            Console.WriteLine("Signalhandler Mono INT recieved " + i + ".");
+            Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Signalhandler Mono INT recieved " + i + ".");
             this.RunningProcess = false;
             break;
           }
@@ -31,7 +31,7 @@ namespace BlubbFish.Utils.IoT.Bots {
         this.sig_thread.Start();
       } else {
         Console.CancelKeyPress += new ConsoleCancelEventHandler(this.SetupShutdown);
-        Console.WriteLine("Signalhandler Windows attached.");
+        Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Signalhandler Windows attached.");
       }
       while (this.RunningProcess) {
         Thread.Sleep(100);
@@ -40,14 +40,14 @@ namespace BlubbFish.Utils.IoT.Bots {
 
     private void SetupShutdown(Object sender, ConsoleCancelEventArgs e) {
       e.Cancel = true;
-      Console.WriteLine("Signalhandler Windows INT recieved.");
+      Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.SetupShutdown: Signalhandler Windows INT recieved.");
       this.RunningProcess = false;
     }
 
     protected void ModulDispose() {
       foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
         item.Value.Dispose();
-        Console.WriteLine("Modul entladen: " + item.Key);
+        Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulDispose: Modul entladen: " + item.Key);
       }
       if (this.sig_thread != null && this.sig_thread.IsAlive) {
         this.sig_thread.Abort();
@@ -60,12 +60,18 @@ namespace BlubbFish.Utils.IoT.Bots {
         if (item.Namespace == @namespace) {
           Type t = item;
           String name = t.Name;
-          if (InIReader.ConfigExist(name.ToLower())) {
-            this.moduls.Add(name, (AModul<T>)t.GetConstructor(new Type[] { typeof(T), typeof(InIReader) }).Invoke(new Object[] { library, InIReader.GetInstance(name.ToLower()) }));
-            Console.WriteLine("Load Modul " + name);
-          } else if (t.HasInterface(typeof(IForceLoad))) {
-            this.moduls.Add(name, (AModul<T>)t.GetConstructor(new Type[] { typeof(T), typeof(InIReader) }).Invoke(new Object[] { library, null }));
-            Console.WriteLine("Load Modul Forced " + name);
+          try {
+            if (InIReader.ConfigExist(name.ToLower())) {
+              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Load Modul " + name);
+              this.moduls.Add(name, (AModul<T>)t.GetConstructor(new Type[] { typeof(T), typeof(InIReader) }).Invoke(new Object[] { library, InIReader.GetInstance(name.ToLower()) }));
+              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Loaded Modul " + name);
+            } else if (t.HasInterface(typeof(IForceLoad))) {
+              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Load Modul Forced " + name);
+              this.moduls.Add(name, (AModul<T>)t.GetConstructor(new Type[] { typeof(T), typeof(InIReader) }).Invoke(new Object[] { library, null }));
+              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Loaded Modul Forced " + name);
+            }
+          } catch(Exception e) {
+            Helper.WriteError(e.InnerException.Message);
           }
         }
       }
@@ -74,6 +80,7 @@ namespace BlubbFish.Utils.IoT.Bots {
     protected void ModulInterconnect() {
       foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
         item.Value.Interconnect(this.moduls);
+        Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulInterconnect: Interconnect Module " + item.Key);
       }
     }
 
@@ -81,6 +88,7 @@ namespace BlubbFish.Utils.IoT.Bots {
       foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
         item.Value.EventLibSetter();
         item.Value.Update += this.ModulUpdate;
+        Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulEvents: Attach Event " + item.Key);
       }
     }
 

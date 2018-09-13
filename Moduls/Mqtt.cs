@@ -18,6 +18,8 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       if (this.config.ContainsKey("settings")) {
         this.connectionWatcher = new Thread(this.ConnectionWatcherRunner);
         this.connectionWatcher.Start();
+      } else {
+        throw new ArgumentException("Setting section [settings] is missing!");
       }
     }
     #endregion
