@@ -37,6 +37,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     }
 
     protected void Reconnect() {
+      Console.WriteLine("BlubbFish.Utils.IoT.Bots.Moduls.Mqtt.Reconnect()");
       this.Disconnect();
       this.Connect();
     }

@@ -13,12 +13,13 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
 
     #region Overtakerfunctions
     protected void ParseIni() {
+      this.RemoveLibraryUpdateHooks();
       foreach (KeyValuePair<String, Dictionary<String, String>> item in this.config) {
         if (item.Value.ContainsKey("from")) {
           String from = item.Value["from"];
           String[] source = from.Split(':');
           this.events.Add(source[0], item.Value);
-          this.LibraryUpdateHook(source[0]);
+          this.AddLibraryUpdateHook(source[0]);
         }
       }
     }
@@ -53,7 +54,9 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       }
     }
 
-    protected abstract void LibraryUpdateHook(String id);
+    protected abstract void AddLibraryUpdateHook(String id);
+
+    protected abstract void RemoveLibraryUpdateHooks();
 
     protected abstract void SetValueHook(String id, String prop, String value);
     #endregion
