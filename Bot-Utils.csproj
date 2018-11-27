@@ -52,7 +52,6 @@
     <Compile Include="Events\MqttEvent.cs" />
     <Compile Include="Events\OvertakerEvent.cs" />
     <Compile Include="Events\StatusPollingEvent.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IForceLoad.cs" />
     <Compile Include="Moduls\AModul.cs" />
     <Compile Include="Moduls\CronJob.cs" />
