@@ -65,15 +65,15 @@
     <Compile Include="Webserver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Librarys\litjson\litjson\litjson_4.7.1.csproj">
+    <ProjectReference Include="..\..\..\Librarys\litjson\litjson\litjson_4.7.1.csproj">
       <Project>{91a14cd2-2940-4500-8193-56d37edddbaa}</Project>
       <Name>litjson_4.7.1</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IoT\Utils-IoT.csproj">
+    <ProjectReference Include="..\..\Utils-IoT\Utils-IoT\Utils-IoT.csproj">
       <Project>{b870e4d5-6806-4a0b-b233-8907eedc5afc}</Project>
       <Name>Utils-IoT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.csproj">
+    <ProjectReference Include="..\..\Utils\Utils\Utils.csproj">
       <Project>{fac8ce64-bf13-4ece-8097-aeb5dd060098}</Project>
       <Name>Utils</Name>
     </ProjectReference>
