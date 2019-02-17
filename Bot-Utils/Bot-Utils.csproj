@@ -35,9 +35,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Posix">
-      <HintPath>..\packages\Mono.Posix.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,6 +65,10 @@
     <ProjectReference Include="..\..\..\Librarys\litjson\litjson\litjson_4.7.1.csproj">
       <Project>{91a14cd2-2940-4500-8193-56d37edddbaa}</Project>
       <Name>litjson_4.7.1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Librarys\Mono.Posix\Mono.Posix\Mono.Posix.csproj">
+      <Project>{e2ca132e-e85c-40ad-be94-b138aa68772b}</Project>
+      <Name>Mono.Posix</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Utils-IoT\Utils-IoT\Utils-IoT.csproj">
       <Project>{b870e4d5-6806-4a0b-b233-8907eedc5afc}</Project>
