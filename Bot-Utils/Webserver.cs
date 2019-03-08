@@ -55,10 +55,12 @@ namespace BlubbFish.Utils.IoT.Bots
         String end = restr.IndexOf('.') != -1 ? restr.Substring(restr.IndexOf('.')+1) : "";
         if (File.Exists("resources/"+ restr)) {
           try {
-            if (end  == "png" || end == ".jpg" || end == ".jpeg" || end == ".ico") {
+            if (end  == "png" || end == "jpg" || end == "jpeg" || end == "ico") {
               Byte[] output = File.ReadAllBytes("resources/" + restr);
+              switch(end) {
+                case "ico": cont.Response.ContentType = "image/x-ico"; break;
+              }
               cont.Response.OutputStream.Write(output, 0, output.Length);
-              cont.Response.ContentType = "image/"+end;
               return;
             } else {
               String file = File.ReadAllText("resources/" + restr);
@@ -71,6 +73,9 @@ namespace BlubbFish.Utils.IoT.Bots
               file = file.Replace("{%REQUEST_URL_HOST%}", cont.Request.Url.Host);
               Byte[] buf = Encoding.UTF8.GetBytes(file);
               cont.Response.ContentLength64 = buf.Length;
+              switch(end) {
+                case "css": cont.Response.ContentType = "text/css"; break;
+              }
               cont.Response.OutputStream.Write(buf, 0, buf.Length);
               Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
               return;
