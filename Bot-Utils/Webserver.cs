@@ -67,7 +67,7 @@ namespace BlubbFish.Utils.IoT.Bots
               if (this.requests.GetSections(false).Contains(restr)) {
                 Dictionary<String, String> vars = this.requests.GetSection(restr);
                 foreach (KeyValuePair<String, String> item in vars) {
-                  file = file.Replace("{%" + item.Key.ToUpper() + "%}", item.Value);
+                  file = file.Replace("\"{%" + item.Key.ToUpper() + "%}\"", item.Value);
                 }
               }
               file = file.Replace("{%REQUEST_URL_HOST%}", cont.Request.Url.Host);
