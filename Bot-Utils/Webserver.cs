@@ -55,10 +55,11 @@ namespace BlubbFish.Utils.IoT.Bots
         String end = restr.IndexOf('.') != -1 ? restr.Substring(restr.IndexOf('.')+1) : "";
         if (File.Exists("resources/"+ restr)) {
           try {
-            if (end  == "png" || end == "jpg" || end == "jpeg" || end == "ico") {
+            if (end  == "png" || end == "jpg" || end == "jpeg" || end == "ico" || end == "woff") {
               Byte[] output = File.ReadAllBytes("resources/" + restr);
               switch(end) {
                 case "ico": cont.Response.ContentType = "image/x-ico"; break;
+                case "woff": cont.Response.ContentType = "font/woff"; break;
               }
               cont.Response.OutputStream.Write(output, 0, output.Length);
               return;

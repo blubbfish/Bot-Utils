@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BlubbFish")]
 [assembly: AssemblyProduct("Bot-Utils")]
-[assembly: AssemblyCopyright("Copyright ©  2018 - 09.03.2019")]
+[assembly: AssemblyCopyright("Copyright ©  2018 - 12.03.2019")]
 [assembly: AssemblyTrademark("© BlubbFish")]
 [assembly: AssemblyCulture("")]
 
@@ -32,12 +32,13 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.3")]
-[assembly: AssemblyFileVersion("1.1.3")]
+[assembly: AssemblyVersion("1.1.4")]
+[assembly: AssemblyFileVersion("1.1.4")]
 
 /*
  * 1.1.0 Remove Helper from Bot-Utils
  * 1.1.1 Update to local librarys
  * 1.1.2 Fixing bug for Contenttype
  * 1.1.3 Variables parsing now as a String
+ * 1.1.4 add Woff as Binary type
  */
