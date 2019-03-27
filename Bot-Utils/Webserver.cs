@@ -1,5 +1,6 @@
 ﻿using BlubbFish.Utils.IoT.Connector;
 using BlubbFish.Utils.IoT.Events;
+using LitJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -92,6 +93,13 @@ namespace BlubbFish.Utils.IoT.Bots
         return;
       }
       return;
+    }
+
+    protected void SendJsonResponse(Object data, HttpListenerContext cont) {
+      Byte[] buf = Encoding.UTF8.GetBytes(JsonMapper.ToJson(data));
+      cont.Response.ContentLength64 = buf.Length;
+      cont.Response.OutputStream.Write(buf, 0, buf.Length);
+      Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
     }
 
     public void Dispose() {
