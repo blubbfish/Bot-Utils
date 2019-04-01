@@ -15,12 +15,12 @@ namespace BlubbFish.Utils.IoT.Bots
   public abstract class Webserver
   {
     protected Dictionary<String, String> config;
-    protected InIReader requests;
+    protected static InIReader requests;
     protected HttpListener httplistener;
 
-    public Webserver(ABackend backend, Dictionary<String, String> settings, InIReader requests) {
+    public Webserver(ABackend backend, Dictionary<String, String> settings, InIReader requestslookup) {
       this.config = settings;
-      this.requests = requests;
+      requests = requestslookup;
       backend.MessageIncomming += this.Backend_MessageIncomming;
       this.httplistener = new HttpListener();
       this.httplistener.Prefixes.Add(this.config["prefix"]);
@@ -32,7 +32,7 @@ namespace BlubbFish.Utils.IoT.Bots
             ThreadPool.QueueUserWorkItem((state) => {
               HttpListenerContext httplistenercontext = state as HttpListenerContext;
               try {
-                this.SendResponse(httplistenercontext);
+                this.SendWebserverResponse(httplistenercontext);
               } catch { } finally {
                 httplistenercontext.Response.OutputStream.Close();
               }
@@ -42,33 +42,37 @@ namespace BlubbFish.Utils.IoT.Bots
       });
     }
 
-    protected virtual void SendResponse(HttpListenerContext cont) {
+    public static Boolean SendFileResponse(HttpListenerContext cont, String folder) {
       String restr = cont.Request.Url.PathAndQuery;
-      if (restr.StartsWith("/")) {
+      if(restr.StartsWith("/")) {
         if(restr.IndexOf("?") != -1) {
-          restr = restr.Substring(1, restr.IndexOf("?")-1);
+          restr = restr.Substring(1, restr.IndexOf("?") - 1);
         } else {
           restr = restr.Substring(1);
         }
         if(restr == "") {
           restr = "index.html";
         }
-        String end = restr.IndexOf('.') != -1 ? restr.Substring(restr.IndexOf('.')+1) : "";
-        if (File.Exists("resources/"+ restr)) {
+        String end = restr.IndexOf('.') != -1 ? restr.Substring(restr.IndexOf('.') + 1) : "";
+        if(File.Exists(folder + "/" + restr)) {
           try {
-            if (end  == "png" || end == "jpg" || end == "jpeg" || end == "ico" || end == "woff") {
-              Byte[] output = File.ReadAllBytes("resources/" + restr);
+            if(end == "png" || end == "jpg" || end == "jpeg" || end == "ico" || end == "woff") {
+              Byte[] output = File.ReadAllBytes(folder + "/" + restr);
               switch(end) {
-                case "ico": cont.Response.ContentType = "image/x-ico"; break;
-                case "woff": cont.Response.ContentType = "font/woff"; break;
+                case "ico":
+                  cont.Response.ContentType = "image/x-ico";
+                  break;
+                case "woff":
+                  cont.Response.ContentType = "font/woff";
+                  break;
               }
               cont.Response.OutputStream.Write(output, 0, output.Length);
-              return;
+              return true;
             } else {
-              String file = File.ReadAllText("resources/" + restr);
-              if (this.requests.GetSections(false).Contains(restr)) {
-                Dictionary<String, String> vars = this.requests.GetSection(restr);
-                foreach (KeyValuePair<String, String> item in vars) {
+              String file = File.ReadAllText(folder + "/" + restr);
+              if(requests.GetSections(false).Contains(restr)) {
+                Dictionary<String, String> vars = requests.GetSection(restr);
+                foreach(KeyValuePair<String, String> item in vars) {
                   file = file.Replace("\"{%" + item.Key.ToUpper() + "%}\"", item.Value);
                 }
               }
@@ -76,30 +80,35 @@ namespace BlubbFish.Utils.IoT.Bots
               Byte[] buf = Encoding.UTF8.GetBytes(file);
               cont.Response.ContentLength64 = buf.Length;
               switch(end) {
-                case "css": cont.Response.ContentType = "text/css"; break;
+                case "css":
+                  cont.Response.ContentType = "text/css";
+                  break;
               }
               cont.Response.OutputStream.Write(buf, 0, buf.Length);
               Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
-              return;
+              return true;
             }
           } catch(Exception e) {
             Helper.WriteError("500 - " + e.Message);
             cont.Response.StatusCode = 500;
-            return;
+            return false;
           }
         }
-        Helper.WriteError("404 - " + cont.Request.Url.PathAndQuery + " not found!");
-        cont.Response.StatusCode = 404;
-        return;
       }
-      return;
+      Helper.WriteError("404 - " + cont.Request.Url.PathAndQuery + " not found!");
+      cont.Response.StatusCode = 404;
+      return false;
     }
 
-    protected void SendJsonResponse(Object data, HttpListenerContext cont) {
-      Byte[] buf = Encoding.UTF8.GetBytes(JsonMapper.ToJson(data));
-      cont.Response.ContentLength64 = buf.Length;
-      cont.Response.OutputStream.Write(buf, 0, buf.Length);
-      Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
+    public static Boolean SendJsonResponse(Object data, HttpListenerContext cont) {
+      try {
+        Byte[] buf = Encoding.UTF8.GetBytes(JsonMapper.ToJson(data));
+        cont.Response.ContentLength64 = buf.Length;
+        cont.Response.OutputStream.Write(buf, 0, buf.Length);
+        Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
+        return true;
+      } catch { }
+      return false;
     }
 
     public void Dispose() {
@@ -108,5 +117,6 @@ namespace BlubbFish.Utils.IoT.Bots
     }
 
     protected abstract void Backend_MessageIncomming(Object sender, BackendEvent e);
+    protected abstract Boolean SendWebserverResponse(HttpListenerContext cont);
   }
 }

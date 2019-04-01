@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.5")]
-[assembly: AssemblyFileVersion("1.1.5")]
+[assembly: AssemblyVersion("1.1.6")]
+[assembly: AssemblyFileVersion("1.1.6")]
 
 /*
  * 1.1.0 Remove Helper from Bot-Utils
@@ -42,4 +42,5 @@ using System.Runtime.InteropServices;
  * 1.1.3 Variables parsing now as a String
  * 1.1.4 add Woff as Binary type
  * 1.1.5 add a function to send an object as json directly
+ * 1.1.6 rename functions and make SendFileResponse with a parameter for the folder
  */
