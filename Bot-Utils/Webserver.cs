@@ -1,17 +1,15 @@
-﻿using BlubbFish.Utils.IoT.Connector;
-using BlubbFish.Utils.IoT.Events;
-using LitJson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Web;
+using BlubbFish.Utils.IoT.Connector;
+using BlubbFish.Utils.IoT.Events;
+using LitJson;
 
-namespace BlubbFish.Utils.IoT.Bots
-{
+namespace BlubbFish.Utils.IoT.Bots {
   public abstract class Webserver
   {
     protected Dictionary<String, String> config;
@@ -42,7 +40,7 @@ namespace BlubbFish.Utils.IoT.Bots
       });
     }
 
-    public static Boolean SendFileResponse(HttpListenerContext cont, String folder) {
+    public static Boolean SendFileResponse(HttpListenerContext cont, String folder = "resources") {
       String restr = cont.Request.Url.PathAndQuery;
       if(restr.StartsWith("/")) {
         if(restr.IndexOf("?") != -1) {
@@ -109,6 +107,26 @@ namespace BlubbFish.Utils.IoT.Bots
         return true;
       } catch { }
       return false;
+    }
+
+    public static Dictionary<String, String> GetPostParams(HttpListenerRequest req) {
+      if(req.HttpMethod == "POST") {
+        if(req.HasEntityBody) {
+          StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+          String rawData = reader.ReadToEnd();
+          req.InputStream.Close();
+          reader.Close();
+          Dictionary<String, String> ret = new Dictionary<String, String>();
+          foreach(String param in rawData.Split('&')) {
+            String[] kvPair = param.Split('=');
+            if(!ret.ContainsKey(kvPair[0])) {
+              ret.Add(kvPair[0], HttpUtility.UrlDecode(kvPair[1]));
+            }
+          }
+          return ret;
+        }
+      }
+      return new Dictionary<String, String>();
     }
 
     public void Dispose() {
