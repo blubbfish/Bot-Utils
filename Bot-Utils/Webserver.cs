@@ -48,8 +48,8 @@ namespace BlubbFish.Utils.IoT.Bots {
         } else {
           restr = restr.Substring(1);
         }
-        if(restr == "") {
-          restr = "index.html";
+        if(Directory.Exists(folder + "/" + restr)) {
+          restr += "/index.html";
         }
         String end = restr.IndexOf('.') != -1 ? restr.Substring(restr.IndexOf('.') + 1) : "";
         if(File.Exists(folder + "/" + restr)) {

@@ -42,5 +42,5 @@ using System.Runtime.InteropServices;
  * 1.1.3 Variables parsing now as a String
  * 1.1.4 add Woff as Binary type
  * 1.1.5 add a function to send an object as json directly
- * 1.1.6 rename functions and make SendFileResponse with a parameter for the folder
+ * 1.1.6 rename functions and make SendFileResponse with a parameter for the folder, 
  */
