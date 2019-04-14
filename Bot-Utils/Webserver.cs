@@ -15,18 +15,23 @@ namespace BlubbFish.Utils.IoT.Bots {
     protected Dictionary<String, String> config;
     protected static InIReader requests;
     protected HttpListener httplistener;
+    protected ABackend databackend;
 
     public Webserver(ABackend backend, Dictionary<String, String> settings, InIReader requestslookup) {
       this.config = settings;
       requests = requestslookup;
-      backend.MessageIncomming += this.Backend_MessageIncomming;
+      this.databackend = backend;
+    }
+
+    protected void StartListen() {
+      this.databackend.MessageIncomming += this.Backend_MessageIncomming;
       this.httplistener = new HttpListener();
       this.httplistener.Prefixes.Add(this.config["prefix"]);
       this.httplistener.Start();
       ThreadPool.QueueUserWorkItem((o) => {
         Console.WriteLine("Webserver is Running...");
         try {
-          while (this.httplistener.IsListening) {
+          while(this.httplistener.IsListening) {
             ThreadPool.QueueUserWorkItem((state) => {
               HttpListenerContext httplistenercontext = state as HttpListenerContext;
               try {
@@ -74,7 +79,7 @@ namespace BlubbFish.Utils.IoT.Bots {
                   file = file.Replace("\"{%" + item.Key.ToUpper() + "%}\"", item.Value);
                 }
               }
-              file = file.Replace("{%REQUEST_URL_HOST%}", cont.Request.Url.Host);
+              file = file.Replace("{%REQUEST_URL_HOST%}", cont.Request.Url.Host+":"+cont.Request.Url.Port);
               Byte[] buf = Encoding.UTF8.GetBytes(file);
               cont.Response.ContentLength64 = buf.Length;
               switch(end) {
