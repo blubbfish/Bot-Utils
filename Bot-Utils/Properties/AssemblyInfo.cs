@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BlubbFish")]
 [assembly: AssemblyProduct("Bot-Utils")]
-[assembly: AssemblyCopyright("Copyright ©  2018 - 14.04.2019")]
+[assembly: AssemblyCopyright("Copyright ©  2018 - 15.04.2019")]
 [assembly: AssemblyTrademark("© BlubbFish")]
 [assembly: AssemblyCulture("")]
 
@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.7")]
-[assembly: AssemblyFileVersion("1.1.7")]
+[assembly: AssemblyVersion("1.1.8")]
+[assembly: AssemblyFileVersion("1.1.8")]
 
 /*
  * 1.1.0 Remove Helper from Bot-Utils
@@ -45,4 +45,5 @@ using System.Runtime.InteropServices;
  * 1.1.6 rename functions and make SendFileResponse with a parameter for the folder (default resources), 
  *       also put returntype boolean, add function that parse post params, if path is a dictionary try to load index.html
  * 1.1.7 Restrucutre loading, so that all is init and after the listener is started, REQUEST_URL_HOST gives now host and port
+ * 1.1.8 Add logger to Webserver Class
  */

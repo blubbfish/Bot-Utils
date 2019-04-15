@@ -16,6 +16,7 @@ namespace BlubbFish.Utils.IoT.Bots {
     protected static InIReader requests;
     protected HttpListener httplistener;
     protected ABackend databackend;
+    protected ProgramLogger logger = new ProgramLogger();
 
     public Webserver(ABackend backend, Dictionary<String, String> settings, InIReader requestslookup) {
       this.config = settings;
