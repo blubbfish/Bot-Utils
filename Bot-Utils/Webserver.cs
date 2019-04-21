@@ -46,7 +46,7 @@ namespace BlubbFish.Utils.IoT.Bots {
       });
     }
 
-    public static Boolean SendFileResponse(HttpListenerContext cont, String folder = "resources") {
+    public static Boolean SendFileResponse(HttpListenerContext cont, String folder = "resources", Boolean printOutput = true) {
       String restr = cont.Request.Url.PathAndQuery;
       if(restr.StartsWith("/")) {
         if(restr.IndexOf("?") != -1) {
@@ -71,6 +71,9 @@ namespace BlubbFish.Utils.IoT.Bots {
                   break;
               }
               cont.Response.OutputStream.Write(output, 0, output.Length);
+              if(printOutput) {
+                Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
+              }
               return true;
             } else {
               String file = File.ReadAllText(folder + "/" + restr);
@@ -89,7 +92,9 @@ namespace BlubbFish.Utils.IoT.Bots {
                   break;
               }
               cont.Response.OutputStream.Write(buf, 0, buf.Length);
-              Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
+              if(printOutput) {
+                Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
+              }
               return true;
             }
           } catch(Exception e) {
@@ -99,7 +104,9 @@ namespace BlubbFish.Utils.IoT.Bots {
           }
         }
       }
-      Helper.WriteError("404 - " + cont.Request.Url.PathAndQuery + " not found!");
+      if(printOutput) {
+        Helper.WriteError("404 - " + cont.Request.Url.PathAndQuery + " not found!");
+      }
       cont.Response.StatusCode = 404;
       return false;
     }
