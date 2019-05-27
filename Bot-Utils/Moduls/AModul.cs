@@ -54,9 +54,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
 
     protected abstract void LibUpadteThread(Object state);
 
-    protected void HandleLibUpdate(Object sender, EventArgs e) {
-      ThreadPool.QueueUserWorkItem(this.LibUpadteThread, e);
-    }
+    protected void HandleLibUpdate(Object sender, EventArgs e) => ThreadPool.QueueUserWorkItem(this.LibUpadteThread, e);
 
     public abstract void Dispose();
 

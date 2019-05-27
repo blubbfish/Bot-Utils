@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden
@@ -9,9 +10,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BlubbFish")]
 [assembly: AssemblyProduct("Bot-Utils")]
-[assembly: AssemblyCopyright("Copyright ©  2018 - 21.04.2019")]
+[assembly: AssemblyCopyright("Copyright ©  2018 - 27.05.2019")]
 [assembly: AssemblyTrademark("© BlubbFish")]
 [assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("de-DE")]
 
 // Durch Festlegen von ComVisible auf FALSE werden die Typen in dieser Assembly
 // für COM-Komponenten unsichtbar.  Wenn Sie auf einen Typ in dieser Assembly von
@@ -31,8 +33,8 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.9")]
-[assembly: AssemblyFileVersion("1.1.9")]
+[assembly: AssemblyVersion("1.2.0")]
+[assembly: AssemblyFileVersion("1.2.0")]
 
 /*
  * 1.1.0 Remove Helper from Bot-Utils
@@ -46,4 +48,5 @@ using System.Runtime.InteropServices;
  * 1.1.7 Restrucutre loading, so that all is init and after the listener is started, REQUEST_URL_HOST gives now host and port
  * 1.1.8 Add logger to Webserver Class
  * 1.1.9 Modify Output of SendFileResponse
+ * 1.2.0 Refactor Bot to ABot and refere MultiSourceBot, Webserver and Bot to it. Add MultiSourceBot. Rewrite Mqtt module so that it not need to watch the connection. 
  */

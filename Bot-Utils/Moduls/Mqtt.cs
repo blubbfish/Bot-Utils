@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading;
 using BlubbFish.Utils.IoT.Bots.Events;
 using BlubbFish.Utils.IoT.Connector;
 using BlubbFish.Utils.IoT.Events;
@@ -9,52 +8,38 @@ using LitJson;
 
 namespace BlubbFish.Utils.IoT.Bots.Moduls {
   public abstract class Mqtt<T> : AModul<T>, IDisposable {
-    protected readonly Thread connectionWatcher;
     protected ABackend mqtt;
     protected Dictionary<String, AModul<T>> modules;
 
     #region Constructor
-    public Mqtt(T lib, InIReader settings) : base(lib, settings) {
-      if (this.config.ContainsKey("settings")) {
-        this.connectionWatcher = new Thread(this.ConnectionWatcherRunner);
-        this.connectionWatcher.Start();
-      } else {
-        throw new ArgumentException("Setting section [settings] is missing!");
-      }
-    }
+    public Mqtt(T lib, InIReader settings) : base(lib, settings) => this.Connect();
     #endregion
 
-    #region Watcher
-    protected void ConnectionWatcherRunner() {
-      while (true) {
-        try {
-          if (this.mqtt == null || !this.mqtt.IsConnected) {
-            this.Reconnect();
-          }
-          Thread.Sleep(10000);
-        } catch (Exception) { }
+    #region Connection
+    protected void Reconnect() {
+      if(!this.config.ContainsKey("settings")) {
+        throw new ArgumentException("Setting section [settings] is missing!");
+      } else {
+        this.Disconnect();
+        this.Connect();
       }
     }
 
-    protected void Reconnect() {
-      Console.WriteLine("BlubbFish.Utils.IoT.Bots.Moduls.Mqtt.Reconnect()");
-      this.Disconnect();
-      this.Connect();
+    protected void Connect() {
+      if(!this.config.ContainsKey("settings")) {
+        throw new ArgumentException("Setting section [settings] is missing!");
+      } else {
+        this.mqtt = ABackend.GetInstance(this.config["settings"], ABackend.BackendType.Data);
+      }
     }
 
-    protected abstract void Connect();
-
-    protected abstract void Disconnect();
+    protected void Disconnect() => this.mqtt.Dispose();
     #endregion
 
     #region AModul
-    public override void Interconnect(Dictionary<String, AModul<T>> moduls) {
-      this.modules = moduls;
-    }
+    public override void Interconnect(Dictionary<String, AModul<T>> moduls) => this.modules = moduls;
 
-    protected override void UpdateConfig() {
-      this.Reconnect();
-    }
+    protected override void UpdateConfig() => this.Reconnect();
     #endregion
 
     protected Tuple<Boolean, MqttEvent> ChangeConfig(BackendEvent e, String topic) {
@@ -90,7 +75,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
             }
             modul.SetConfig(newconf);
             return new Tuple<Boolean, MqttEvent>(true, new MqttEvent("New Config", "Write"));
-          } catch (Exception) { }
+          } catch { }
         }
       }
       return new Tuple<Boolean, MqttEvent>(false, null);
@@ -102,8 +87,6 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     protected void Dispose(Boolean disposing) {
       if (!this.disposedValue) {
         if (disposing) {
-          this.connectionWatcher.Abort();
-          while (this.connectionWatcher.ThreadState == ThreadState.Running) { Thread.Sleep(10); }
           this.Disconnect();
         }
         this.disposedValue = true;
@@ -111,7 +94,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     }
 
     public override void Dispose() {
-      Dispose(true);
+      this.Dispose(true);
       GC.SuppressFinalize(this);
     }
     #endregion

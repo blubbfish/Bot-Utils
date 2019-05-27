@@ -10,13 +10,12 @@ using BlubbFish.Utils.IoT.Events;
 using LitJson;
 
 namespace BlubbFish.Utils.IoT.Bots {
-  public abstract class Webserver
+  public abstract class Webserver : ABot
   {
     protected Dictionary<String, String> config;
     protected static InIReader requests;
     protected HttpListener httplistener;
     protected ABackend databackend;
-    protected ProgramLogger logger = new ProgramLogger();
 
     public Webserver(ABackend backend, Dictionary<String, String> settings, InIReader requestslookup) {
       this.config = settings;
@@ -142,9 +141,10 @@ namespace BlubbFish.Utils.IoT.Bots {
       return new Dictionary<String, String>();
     }
 
-    public void Dispose() {
+    public override void Dispose() {
       this.httplistener.Stop();
       this.httplistener.Close();
+      base.Dispose();
     }
 
     protected abstract void Backend_MessageIncomming(Object sender, BackendEvent e);
