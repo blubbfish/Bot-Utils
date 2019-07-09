@@ -97,7 +97,7 @@ namespace BlubbFish.Utils.IoT.Bots {
               return true;
             }
           } catch(Exception e) {
-            Helper.WriteError("500 - " + e.Message);
+            Helper.WriteError("500 - " + e.Message + "\n\n" + e.StackTrace);
             cont.Response.StatusCode = 500;
             return false;
           }
@@ -117,7 +117,10 @@ namespace BlubbFish.Utils.IoT.Bots {
         cont.Response.OutputStream.Write(buf, 0, buf.Length);
         Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
         return true;
-      } catch { }
+      } catch(Exception e) {
+        Helper.WriteError("500 - " + e.Message + "\n\n" + e.StackTrace);
+        cont.Response.StatusCode = 500;
+      }
       return false;
     }
 
