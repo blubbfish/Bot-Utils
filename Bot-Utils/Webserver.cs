@@ -28,7 +28,7 @@ namespace BlubbFish.Utils.IoT.Bots {
       this.httplistener = new HttpListener();
       this.httplistener.Prefixes.Add(this.config["prefix"]);
       this.httplistener.Start();
-      ThreadPool.QueueUserWorkItem((o) => {
+      _ = ThreadPool.QueueUserWorkItem((o) => {
         Console.WriteLine("Webserver is Running...");
         try {
           while(this.httplistener.IsListening) {
@@ -147,6 +147,9 @@ namespace BlubbFish.Utils.IoT.Bots {
     public override void Dispose() {
       this.httplistener.Stop();
       this.httplistener.Close();
+      if(this.databackend != null) {
+        this.databackend.Dispose();
+      }
       base.Dispose();
     }
 
