@@ -55,7 +55,7 @@ namespace BlubbFish.Utils.IoT.Bots {
         String end = restr.IndexOf('.') != -1 ? restr.Substring(restr.IndexOf('.') + 1) : "";
         if(File.Exists(folder + "/" + restr)) {
           try {
-            if(end == "png" || end == "jpg" || end == "jpeg" || end == "ico" || end == "woff") {
+            if(end == "png" || end == "jpg" || end == "jpeg" || end == "ico" || end == "woff" || end == "mp4") {
               Byte[] output = File.ReadAllBytes(folder + "/" + restr);
               switch(end) {
                 case "ico":
@@ -63,6 +63,9 @@ namespace BlubbFish.Utils.IoT.Bots {
                   break;
                 case "woff":
                   cont.Response.ContentType = "font/woff";
+                  break;
+                case "mp4":
+                  cont.Response.ContentType = "video/mpeg";
                   break;
               }
               cont.Response.OutputStream.Write(output, 0, output.Length);
