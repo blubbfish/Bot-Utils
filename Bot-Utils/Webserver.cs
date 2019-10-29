@@ -32,10 +32,10 @@ namespace BlubbFish.Utils.IoT.Bots {
         Console.WriteLine("Webserver is Running...");
         try {
           while(this.httplistener.IsListening) {
-            ThreadPool.QueueUserWorkItem((state) => {
+            _ = ThreadPool.QueueUserWorkItem((state) => {
               HttpListenerContext httplistenercontext = state as HttpListenerContext;
               try {
-                this.SendWebserverResponse(httplistenercontext);
+                _ = this.SendWebserverResponse(httplistenercontext);
               } catch { } finally {
                 httplistenercontext.Response.OutputStream.Close();
               }
@@ -48,11 +48,7 @@ namespace BlubbFish.Utils.IoT.Bots {
     public static Boolean SendFileResponse(HttpListenerContext cont, String folder = "resources", Boolean printOutput = true) {
       String restr = cont.Request.Url.PathAndQuery;
       if(restr.StartsWith("/")) {
-        if(restr.IndexOf("?") != -1) {
-          restr = restr.Substring(1, restr.IndexOf("?") - 1);
-        } else {
-          restr = restr.Substring(1);
-        }
+        restr = restr.IndexOf("?") != -1 ? restr.Substring(1, restr.IndexOf("?") - 1) : restr.Substring(1);
         if(Directory.Exists(folder + "/" + restr)) {
           restr += "/index.html";
         }
