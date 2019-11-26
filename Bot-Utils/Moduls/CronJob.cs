@@ -30,7 +30,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
 
     #region Cronjobrunner
     protected void Runner() {
-      Thread.Sleep(DateTime.Now.AddMinutes(1).AddSeconds(DateTime.Now.Second * (-1)).AddMilliseconds(DateTime.Now.Millisecond * (-1)) - DateTime.Now);
+      Thread.Sleep(DateTime.Now.AddMinutes(1).AddSeconds(DateTime.Now.Second * -1).AddMilliseconds(DateTime.Now.Millisecond * -1) - DateTime.Now);
       while (true) {
         if (this.crontime.Minute != DateTime.Now.Minute) {
           this.crontime = DateTime.Now;
@@ -140,9 +140,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     #endregion
 
     #region AModul
-    public override void SetInterconnection(String cron, Action<Object> hook, Object data) {
-      this.internalCron.Add(new Tuple<String, Action<Object>, Object>(cron, hook, data));
-    }
+    public override void SetInterconnection(String cron, Action<Object> hook, Object data) => this.internalCron.Add(new Tuple<String, Action<Object>, Object>(cron, hook, data));
 
     protected override void UpdateConfig() { }
     #endregion
@@ -164,7 +162,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     }
 
     public override void Dispose() {
-      Dispose(true);
+      this.Dispose(true);
       GC.SuppressFinalize(this);
     }
     #endregion

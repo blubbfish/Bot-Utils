@@ -39,7 +39,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       if (this.HasConfig && this.ConfigPublic) {
         Dictionary<String, Dictionary<String, String>> ret = new Dictionary<String, Dictionary<String, String>>(this.config);
         if (ret.ContainsKey("modul")) {
-          ret.Remove("modul");
+          _ = ret.Remove("modul");
         }
         return ret;
       }
@@ -61,7 +61,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     public void SetConfig(Dictionary<String, Dictionary<String, String>> newconf) {
       if (this.HasConfig && this.ConfigPublic) {
         if (newconf.ContainsKey("modul")) {
-          newconf.Remove("modul");
+          _ = newconf.Remove("modul");
         }
         if (this.config.ContainsKey("modul")) {
           newconf.Add("modul", this.config["modul"]);

@@ -6,9 +6,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     protected readonly Dictionary<String, Dictionary<String, String>> events = new Dictionary<String, Dictionary<String, String>>();
 
     #region Constructor
-    public Overtaker(T lib, InIReader settings) : base(lib, settings) {
-      this.ParseIni();
-    }
+    public Overtaker(T lib, InIReader settings) : base(lib, settings) => this.ParseIni();
     #endregion
 
     #region Overtakerfunctions
@@ -63,9 +61,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
 
     #region AModul
     public override void Interconnect(Dictionary<String, AModul<T>> moduls) { }
-    protected override void UpdateConfig() {
-      this.ParseIni();
-    }
+    protected override void UpdateConfig() => this.ParseIni();
     #endregion
 
     #region IDisposable Support
@@ -80,7 +76,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     }
 
     public override void Dispose() {
-      Dispose(true);
+      this.Dispose(true);
       GC.SuppressFinalize(this);
     }
     #endregion   

@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿#if NETCOREAPP
+#else
+using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 
@@ -10,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BlubbFish")]
 [assembly: AssemblyProduct("Bot-Utils")]
-[assembly: AssemblyCopyright("Copyright ©  2018 - 30.08.2019")]
+[assembly: AssemblyCopyright("Copyright © BlubbFish 2018 - 30.08.2019")]
 [assembly: AssemblyTrademark("© BlubbFish")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("de-DE")]
@@ -51,3 +53,4 @@ using System.Runtime.InteropServices;
  * 1.2.0 Refactor Bot to ABot and refere MultiSourceBot, Webserver and Bot to it. Add MultiSourceBot. Rewrite Mqtt module so that it not need to watch the connection.
  * 1.2.1 When using Dispose, kill also mqtt connection and other tiny fixes
  */
+#endif

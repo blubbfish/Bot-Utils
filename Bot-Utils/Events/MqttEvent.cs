@@ -9,8 +9,6 @@ namespace BlubbFish.Utils.IoT.Bots.Events {
       this.Value = text;
       this.Source = "MQTT";
     }
-    public override String ToString() {
-      return this.Source + ": on " + this.Address + " set " + this.Value;
-    }
+    public override String ToString() => this.Source + ": on " + this.Address + " set " + this.Value;
   }
 }

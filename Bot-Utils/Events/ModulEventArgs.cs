@@ -14,8 +14,6 @@ namespace BlubbFish.Utils.IoT.Bots.Events {
     public String Property { get; protected set; }
     public String Value { get; protected set; }
     public String Source { get; protected set; }
-    public override String ToString() {
-      return this.Source + ": " + this.Address + " set " + this.Property + " to " + this.Value;
-    }
+    public override String ToString() => this.Source + ": " + this.Address + " set " + this.Property + " to " + this.Value;
   }
 }

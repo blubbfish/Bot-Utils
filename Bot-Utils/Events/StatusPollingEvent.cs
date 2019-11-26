@@ -11,8 +11,6 @@ namespace BlubbFish.Utils.IoT.Bots.Events {
       this.Source = "POLLING";
     }
 
-    public override String ToString() {
-      return this.Source + ": " + this.Value + " on " + this.Address;
-    }
+    public override String ToString() => this.Source + ": " + this.Value + " on " + this.Address;
   }
 }

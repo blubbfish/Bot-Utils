@@ -48,7 +48,7 @@ namespace BlubbFish.Utils.IoT.Bots {
     public static Boolean SendFileResponse(HttpListenerContext cont, String folder = "resources", Boolean printOutput = true) {
       String restr = cont.Request.Url.PathAndQuery;
       if(restr.StartsWith("/")) {
-        restr = restr.IndexOf("?") != -1 ? restr.Substring(1, restr.IndexOf("?") - 1) : restr.Substring(1);
+        restr = restr.IndexOf("?") != -1 ? restr[1..restr.IndexOf("?")] : restr.Substring(1);
         if(Directory.Exists(folder + "/" + restr)) {
           restr += "/index.html";
         }

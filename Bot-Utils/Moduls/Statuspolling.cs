@@ -45,7 +45,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     }
 
     public override void Dispose() {
-      Dispose(true);
+      this.Dispose(true);
       GC.SuppressFinalize(this);
     }
     #endregion
