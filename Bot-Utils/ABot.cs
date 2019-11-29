@@ -4,27 +4,26 @@ using System.Threading;
 
 namespace BlubbFish.Utils.IoT.Bots {
   public abstract class ABot {
+    #if !NETCOREAPP
     private Thread sig_thread;
+    #endif
     private Boolean RunningProcess = true;
 
     protected ProgramLogger logger = new ProgramLogger();
 
-    #if !NETCOREAPP
     private void SetupShutdown(Object sender, ConsoleCancelEventArgs e) {
       e.Cancel = true;
       Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.SetupShutdown: Signalhandler Windows INT recieved.");
       this.RunningProcess = false;
     }
-    #else
     private void Default_Unloading(AssemblyLoadContext obj) {
       Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.SetupShutdown: Signalhandler Windows INT recieved.");
       this.RunningProcess = false;
     }
-    #endif
 
     protected void WaitForShutdown() {
       if(Type.GetType("Mono.Runtime") != null) {
-      #if !NETCOREAPP
+        #if !NETCOREAPP
         this.sig_thread = new Thread(delegate () {
           Mono.Unix.UnixSignal[] signals = new Mono.Unix.UnixSignal[] {
             new Mono.Unix.UnixSignal(Mono.Unix.Native.Signum.SIGTERM),
@@ -41,12 +40,10 @@ namespace BlubbFish.Utils.IoT.Bots {
         this.sig_thread.Start();
         #endif
       } else {
-        #if NETCOREAPP
         AssemblyLoadContext.Default.Unloading += this.Default_Unloading;
-        #else
+        Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Signalhandler Netcore attached.");
         Console.CancelKeyPress += new ConsoleCancelEventHandler(this.SetupShutdown);
         Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Signalhandler Windows attached.");
-        #endif
       }
       while(this.RunningProcess) {
         Thread.Sleep(100);
@@ -56,9 +53,11 @@ namespace BlubbFish.Utils.IoT.Bots {
     
 
     public virtual void Dispose() {
+      #if !NETCOREAPP
       if(this.sig_thread != null && this.sig_thread.IsAlive) {
         this.sig_thread.Abort();
       }
+      #endif
     }
   }
 }

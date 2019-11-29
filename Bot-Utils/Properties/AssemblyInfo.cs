@@ -1,5 +1,4 @@
-﻿#if NETCOREAPP
-#else
+﻿#if !NETCOREAPP
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
@@ -37,7 +36,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.2.1")]
 [assembly: AssemblyFileVersion("1.2.1")]
-
+#endif
 /*
  * 1.1.0 Remove Helper from Bot-Utils
  * 1.1.1 Update to local librarys
@@ -53,4 +52,3 @@ using System.Runtime.InteropServices;
  * 1.2.0 Refactor Bot to ABot and refere MultiSourceBot, Webserver and Bot to it. Add MultiSourceBot. Rewrite Mqtt module so that it not need to watch the connection.
  * 1.2.1 When using Dispose, kill also mqtt connection and other tiny fixes
  */
-#endif
