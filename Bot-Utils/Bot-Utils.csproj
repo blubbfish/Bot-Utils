@@ -65,6 +65,7 @@
     <Compile Include="Webserver.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\CHANGELOG.md" />
 	<Content Include="..\CONTRIBUTING.md" />
 	<Content Include="..\LICENSE" />
 	<Content Include="..\README.md" />

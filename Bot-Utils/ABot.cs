@@ -16,10 +16,15 @@ namespace BlubbFish.Utils.IoT.Bots {
       Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.SetupShutdown: Signalhandler Windows INT recieved.");
       this.RunningProcess = false;
     }
+
+    #if NETCOREAPP
     private void Default_Unloading(AssemblyLoadContext obj) {
-      Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.SetupShutdown: Signalhandler Windows INT recieved.");
+      Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.SetupShutdown: Signalhandler Windows NETCORE recieved.");
       this.RunningProcess = false;
+      Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Shutdown.");
+      this.Dispose(); 
     }
+    #endif
 
     protected void WaitForShutdown() {
       if(Type.GetType("Mono.Runtime") != null) {
@@ -40,14 +45,17 @@ namespace BlubbFish.Utils.IoT.Bots {
         this.sig_thread.Start();
         #endif
       } else {
+        #if NETCOREAPP
         AssemblyLoadContext.Default.Unloading += this.Default_Unloading;
         Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Signalhandler Netcore attached.");
+        #endif
         Console.CancelKeyPress += new ConsoleCancelEventHandler(this.SetupShutdown);
         Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Signalhandler Windows attached.");
       }
       while(this.RunningProcess) {
         Thread.Sleep(100);
       }
+      Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.WaitForShutdown: Shutdown.");
     }
 
     
