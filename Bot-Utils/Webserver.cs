@@ -144,7 +144,10 @@ namespace BlubbFish.Utils.IoT.Bots {
     }
 
     public override void Dispose() {
-      this.httplistener.Stop();
+      if(this.httplistener.IsListening) {
+        this.httplistener.Stop();
+      }
+
       this.httplistener.Close();
       if(this.databackend != null) {
         this.databackend.Dispose();
