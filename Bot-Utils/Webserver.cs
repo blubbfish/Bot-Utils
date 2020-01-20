@@ -75,7 +75,7 @@ namespace BlubbFish.Utils.IoT.Bots {
               return true;
             } else {
               String file = File.ReadAllText(folder + "/" + restr);
-              if(requests.GetSections(false).Contains(restr)) {
+              if(requests != null && requests.GetSections(false).Contains(restr)) {
                 Dictionary<String, String> vars = requests.GetSection(restr);
                 foreach(KeyValuePair<String, String> item in vars) {
                   file = file.Replace("\"{%" + item.Key.ToUpper() + "%}\"", item.Value);
