@@ -48,11 +48,11 @@ namespace BlubbFish.Utils.IoT.Bots {
     public static Boolean SendFileResponse(HttpListenerContext cont, String folder = "resources", Boolean printOutput = true) {
       String restr = cont.Request.Url.PathAndQuery;
       if(restr.StartsWith("/")) {
-        restr = restr.IndexOf("?") != -1 ? restr[1..restr.IndexOf("?")] : restr.Substring(1);
+        restr = restr.IndexOf("?") != -1 ? restr[1..restr.IndexOf("?")] : restr[1..];
         if(Directory.Exists(folder + "/" + restr)) {
           restr += "/index.html";
         }
-        String end = restr.IndexOf('.') != -1 ? restr.Substring(restr.IndexOf('.') + 1) : "";
+        String end = restr.IndexOf('.') != -1 ? restr[(restr.IndexOf('.') + 1)..] : "";
         if(File.Exists(folder + "/" + restr)) {
           try {
             if(end == "png" || end == "jpg" || end == "jpeg" || end == "ico" || end == "woff" || end == "mp4") {
