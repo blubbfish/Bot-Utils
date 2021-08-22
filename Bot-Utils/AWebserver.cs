@@ -5,26 +5,16 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Web;
-using BlubbFish.Utils.IoT.Connector;
-using BlubbFish.Utils.IoT.Events;
-using LitJson;
 
 namespace BlubbFish.Utils.IoT.Bots {
-  public abstract class Webserver : ABot
-  {
+  public abstract class AWebserver : ABot {
     protected Dictionary<String, String> config;
-    protected static InIReader requests;
+    
     protected HttpListener httplistener;
-    protected ABackend databackend;
 
-    public Webserver(ABackend backend, Dictionary<String, String> settings, InIReader requestslookup) {
-      this.config = settings;
-      requests = requestslookup;
-      this.databackend = backend;
-    }
+    public AWebserver(Dictionary<String, String> settings) => this.config = settings;
 
     protected void StartListen() {
-      this.databackend.MessageIncomming += this.Backend_MessageIncomming;
       this.httplistener = new HttpListener();
       this.httplistener.Prefixes.Add(this.config["prefix"]);
       this.httplistener.Start();
@@ -45,7 +35,57 @@ namespace BlubbFish.Utils.IoT.Bots {
       });
     }
 
-    public static Boolean SendFileResponse(HttpListenerContext cont, String folder = "resources", Boolean printOutput = true) {
+    public override void Dispose() {
+      if(this.httplistener.IsListening) {
+        this.httplistener.Stop();
+      }
+      this.httplistener.Close();
+      base.Dispose();
+    }
+
+    protected abstract Boolean SendWebserverResponse(HttpListenerContext cont);
+  }
+
+  #region HttpListener* Extensions
+  public static class HttpListenerHelper {
+    private static InIReader requests;
+
+    public static Dictionary<String, String> GetPostParams(this HttpListenerRequest request) {
+      if(request.HttpMethod == "POST") {
+        if(request.HasEntityBody) {
+          StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding);
+          String rawData = reader.ReadToEnd();
+          request.InputStream.Close();
+          reader.Close();
+          Dictionary<String, String> ret = new Dictionary<String, String>();
+          foreach(String param in rawData.Split('&')) {
+            String[] kvPair = param.Split('=');
+            if(!ret.ContainsKey(kvPair[0])) {
+              ret.Add(kvPair[0], HttpUtility.UrlDecode(kvPair[1]));
+            }
+          }
+          return ret;
+        }
+      }
+      return new Dictionary<String, String>();
+    }
+
+    public static Boolean SendStringResponse(this HttpListenerContext cont, String obj) => cont.SendBinaryResponse(Encoding.UTF8.GetBytes(obj));
+
+    public static Boolean SendBinaryResponse(this HttpListenerContext cont, Byte[] buf) {
+      try {
+        cont.Response.ContentLength64 = buf.Length;
+        cont.Response.OutputStream.Write(buf, 0, buf.Length);
+        Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
+        return true;
+      } catch(Exception e) {
+        Helper.WriteError("500 - " + e.Message + "\n\n" + e.StackTrace);
+        cont.Response.StatusCode = 500;
+      }
+      return false;
+    }
+
+    public static Boolean SendFileResponse(this HttpListenerContext cont, String folder = "resources", Boolean printOutput = true) {
       String restr = cont.Request.Url.PathAndQuery;
       if(restr.StartsWith("/")) {
         restr = restr.IndexOf("?") != -1 ? restr[1..restr.IndexOf("?")] : restr[1..];
@@ -81,7 +121,7 @@ namespace BlubbFish.Utils.IoT.Bots {
                   file = file.Replace("\"{%" + item.Key.ToUpper() + "%}\"", item.Value);
                 }
               }
-              file = file.Replace("{%REQUEST_URL_HOST%}", cont.Request.Url.Host+":"+cont.Request.Url.Port);
+              file = file.Replace("{%REQUEST_URL_HOST%}", cont.Request.Url.Host + ":" + cont.Request.Url.Port);
               Byte[] buf = Encoding.UTF8.GetBytes(file);
               cont.Response.ContentLength64 = buf.Length;
               switch(end) {
@@ -109,53 +149,7 @@ namespace BlubbFish.Utils.IoT.Bots {
       return false;
     }
 
-    public static Boolean SendJsonResponse(Object data, HttpListenerContext cont) {
-      try {
-        Byte[] buf = Encoding.UTF8.GetBytes(JsonMapper.ToJson(data));
-        cont.Response.ContentLength64 = buf.Length;
-        cont.Response.OutputStream.Write(buf, 0, buf.Length);
-        Console.WriteLine("200 - " + cont.Request.Url.PathAndQuery);
-        return true;
-      } catch(Exception e) {
-        Helper.WriteError("500 - " + e.Message + "\n\n" + e.StackTrace);
-        cont.Response.StatusCode = 500;
-      }
-      return false;
-    }
-
-    public static Dictionary<String, String> GetPostParams(HttpListenerRequest req) {
-      if(req.HttpMethod == "POST") {
-        if(req.HasEntityBody) {
-          StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
-          String rawData = reader.ReadToEnd();
-          req.InputStream.Close();
-          reader.Close();
-          Dictionary<String, String> ret = new Dictionary<String, String>();
-          foreach(String param in rawData.Split('&')) {
-            String[] kvPair = param.Split('=');
-            if(!ret.ContainsKey(kvPair[0])) {
-              ret.Add(kvPair[0], HttpUtility.UrlDecode(kvPair[1]));
-            }
-          }
-          return ret;
-        }
-      }
-      return new Dictionary<String, String>();
-    }
-
-    public override void Dispose() {
-      if(this.httplistener.IsListening) {
-        this.httplistener.Stop();
-      }
-
-      this.httplistener.Close();
-      if(this.databackend != null) {
-        this.databackend.Dispose();
-      }
-      base.Dispose();
-    }
-
-    protected abstract void Backend_MessageIncomming(Object sender, BackendEvent e);
-    protected abstract Boolean SendWebserverResponse(HttpListenerContext cont);
+    public static void SetRequestsOverride(InIReader requestslookup) => requests = requestslookup;
   }
+  #endregion
 }

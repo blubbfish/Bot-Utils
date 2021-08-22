@@ -5,19 +5,20 @@
     <RootNamespace>BlubbFish.Utils.IoT.Bots</RootNamespace>
     <AssemblyName>Bot-Utils</AssemblyName>
     <PackageId>Bots.IoT.Utils.BlubbFish</PackageId>
-    <Version>1.2.1</Version>
-    <AssemblyVersion>1.2.1</AssemblyVersion>
-    <FileVersion>1.2.1</FileVersion>
+    <Version>1.2.2</Version>
+    <AssemblyVersion>1.2.2</AssemblyVersion>
+    <FileVersion>1.2.2</FileVersion>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <Description>Bot-Utils are helpers for programming a bot</Description>
     <Authors>BlubbFish</Authors>
     <Company>BlubbFish</Company>
-    <Copyright>Copyright © BlubbFish 2018 - 30.08.2019</Copyright>
+    <Copyright>Copyright © BlubbFish 2018 - 22.08.2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>http://git.blubbfish.net/vs_utils/Bot-Utils</PackageProjectUrl>
     <RepositoryUrl>http://git.blubbfish.net/vs_utils/Bot-Utils.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>1.2.1 When using Dispose, kill also mqtt connection and other tiny fixes
+    <PackageReleaseNotes>1.2.2 Going to netcore
+1.2.1 When using Dispose, kill also mqtt connection and other tiny fixes
 1.2.0 Refactor Bot to ABot and refere MultiSourceBot, Webserver and Bot to it. Add MultiSourceBot. Rewrite Mqtt module so that it not need to watch the connection.
 1.1.9 Modify Output of SendFileResponse
 1.1.8 Add logger to Webserver Class
@@ -39,10 +40,11 @@
 
   <ItemGroup>
     <Content Include="../CHANGELOG.md" />
-	<Content Include="../CONTRIBUTING.md" />
-	<Content Include="../LICENSE" />
-	<Content Include="../README.md" />
+    <Content Include="../CONTRIBUTING.md" />
+    <Content Include="../LICENSE" />
+    <Content Include="../README.md" />
   </ItemGroup>
+  
   <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
