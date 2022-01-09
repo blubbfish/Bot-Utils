@@ -22,7 +22,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       }
     }
 
-    protected void SetValues(Object sender, String name, Dictionary<String, String> dictionary) {
+    protected void SetValues(Object sender, String _, Dictionary<String, String> dictionary) {
       String from = dictionary["from"];
       String[] source = from.Split(':');
       if (source.Length != 2) {

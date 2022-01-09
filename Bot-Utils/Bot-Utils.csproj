@@ -5,19 +5,20 @@
     <RootNamespace>BlubbFish.Utils.IoT.Bots</RootNamespace>
     <AssemblyName>Bot-Utils</AssemblyName>
     <PackageId>Bots.IoT.Utils.BlubbFish</PackageId>
-    <Version>1.2.2</Version>
-    <AssemblyVersion>1.2.2</AssemblyVersion>
-    <FileVersion>1.2.2</FileVersion>
+    <Version>1.2.3</Version>
+    <AssemblyVersion>1.2.3</AssemblyVersion>
+    <FileVersion>1.2.3</FileVersion>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <Description>Bot-Utils are helpers for programming a bot</Description>
     <Authors>BlubbFish</Authors>
     <Company>BlubbFish</Company>
-    <Copyright>Copyright © BlubbFish 2018 - 22.08.2021</Copyright>
+    <Copyright>Copyright © BlubbFish 2018 - 09.01.2022</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>http://git.blubbfish.net/vs_utils/Bot-Utils</PackageProjectUrl>
     <RepositoryUrl>http://git.blubbfish.net/vs_utils/Bot-Utils.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>1.2.2 Going to netcore
+    <PackageReleaseNotes>1.2.3 Tiny Refactoring
+1.2.2 Going to netcore
 1.2.1 When using Dispose, kill also mqtt connection and other tiny fixes
 1.2.0 Refactor Bot to ABot and refere MultiSourceBot, Webserver and Bot to it. Add MultiSourceBot. Rewrite Mqtt module so that it not need to watch the connection.
 1.1.9 Modify Output of SendFileResponse

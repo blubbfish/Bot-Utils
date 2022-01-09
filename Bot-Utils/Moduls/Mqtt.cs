@@ -25,13 +25,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       }
     }
 
-    protected void Connect() {
-      if(!this.config.ContainsKey("settings")) {
-        throw new ArgumentException("Setting section [settings] is missing!");
-      } else {
-        this.mqtt = ABackend.GetInstance(this.config["settings"], ABackend.BackendType.Data);
-      }
-    }
+    protected void Connect() => this.mqtt = !this.config.ContainsKey("settings") ? throw new ArgumentException("Setting section [settings] is missing!") : ABackend.GetInstance(this.config["settings"], ABackend.BackendType.Data);
 
     protected void Disconnect() => this.mqtt.Dispose();
     #endregion
