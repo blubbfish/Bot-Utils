@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.4 - 2022-01-18 - Config enabled module loading
+### New Features
+* Modules can have an enabled=true|false in config, so that also enables or disables moduleloading.
+### Bugfixes
+### Changes
+
 ## 1.2.3 - 2022-01-09 - Tiny Refactoring
 ### New Features
 ### Bugfixes

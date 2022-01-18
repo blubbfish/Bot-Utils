@@ -25,13 +25,18 @@ namespace BlubbFish.Utils.IoT.Bots {
           String name = t.Name;
           try {
             if (InIReader.ConfigExist(name.ToLower())) {
-              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Load Modul " + name);
-              this.moduls.Add(name, (AModul<T>)t.GetConstructor(new Type[] { typeof(T), typeof(InIReader) }).Invoke(new Object[] { library, InIReader.GetInstance(name.ToLower()) }));
-              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Loaded Modul " + name);
-            } else if (t.HasInterface(typeof(IForceLoad))) {
-              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Load Modul Forced " + name);
+              Dictionary<String, String> modulconfig = InIReader.GetInstance(name.ToLower()).GetSection("modul");
+              if(!(modulconfig.ContainsKey("enabled") && modulconfig["enabled"].ToLower() == "false")) {
+                Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Load Modul " + name);
+                this.moduls.Add(name, (AModul<T>)t.GetConstructor(new Type[] { typeof(T), typeof(InIReader) }).Invoke(new Object[] { library, InIReader.GetInstance(name.ToLower()) }));
+                Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Loaded Modul " + name);
+                continue;
+              }
+            } 
+            if (t.HasInterface(typeof(IForceLoad))) {
+              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Forced Load Modul " + name);
               this.moduls.Add(name, (AModul<T>)t.GetConstructor(new Type[] { typeof(T), typeof(InIReader) }).Invoke(new Object[] { library, null }));
-              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Loaded Modul Forced " + name);
+              Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulLoader: Forced Loaded Modul " + name);
             }
           } catch(Exception e) {
             Helper.WriteError(e.InnerException.Message);
