@@ -7,7 +7,7 @@ using BlubbFish.Utils.IoT.Events;
 using LitJson;
 
 namespace BlubbFish.Utils.IoT.Bots.Moduls {
-  public abstract class Mqtt<T> : AModul<T>, IDisposable {
+  public abstract class Mqtt<T> : AModul<T> {
     protected ABackend mqtt;
     protected Dictionary<String, AModul<T>> modules;
 
@@ -34,6 +34,8 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     public override void Interconnect(Dictionary<String, AModul<T>> moduls) => this.modules = moduls;
 
     protected override void UpdateConfig() => this.Reconnect();
+
+    public override void Dispose() => this.Disconnect();
     #endregion
 
     protected Tuple<Boolean, MqttEvent> ChangeConfig(BackendEvent e, String topic) {
@@ -74,23 +76,5 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       }
       return new Tuple<Boolean, MqttEvent>(false, null);
     }
-
-    #region IDisposable Support
-    private Boolean disposedValue = false;
-
-    protected void Dispose(Boolean disposing) {
-      if (!this.disposedValue) {
-        if (disposing) {
-          this.Disconnect();
-        }
-        this.disposedValue = true;
-      }
-    }
-
-    public override void Dispose() {
-      this.Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-    #endregion
   }
 }

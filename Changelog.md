@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.5 - 2022-01-20 - Better linux handling
+### New Features
+* Add ProcessExit Handler in ABot
+* Add Output in ModulDispose
+### Bugfixes
+* Eleminate Hangs in Cronjob, when in startup phase it not blocks shutdown
+### Changes
+* Reweite ABot, remove Mono Code
+* Codingstyle
+
 ## 1.2.4 - 2022-01-18 - Config enabled module loading
 ### New Features
 * Modules can have an enabled=true|false in config, so that also enables or disables moduleloading.

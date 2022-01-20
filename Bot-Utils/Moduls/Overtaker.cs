@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace BlubbFish.Utils.IoT.Bots.Moduls {
-  public abstract class Overtaker<T> : AModul<T>, IDisposable {
+  public abstract class Overtaker<T> : AModul<T> {
     protected readonly Dictionary<String, Dictionary<String, String>> events = new Dictionary<String, Dictionary<String, String>>();
 
     #region Constructor
@@ -62,23 +62,8 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     #region AModul
     public override void Interconnect(Dictionary<String, AModul<T>> moduls) { }
     protected override void UpdateConfig() => this.ParseIni();
-    #endregion
-
-    #region IDisposable Support
-    private Boolean disposedValue = false;
-
-    protected virtual void Dispose(Boolean disposing) {
-      if (!this.disposedValue) {
-        if (disposing) {
-        }
-        this.disposedValue = true;
-      }
-    }
-
     public override void Dispose() {
-      this.Dispose(true);
-      GC.SuppressFinalize(this);
     }
-    #endregion   
+    #endregion 
   }
 }

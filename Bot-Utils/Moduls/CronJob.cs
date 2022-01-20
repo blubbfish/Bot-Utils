@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
+
 using BlubbFish.Utils.IoT.Bots.Interfaces;
 
 namespace BlubbFish.Utils.IoT.Bots.Moduls {
-  public abstract class CronJob<T> : AModul<T>, IDisposable, IForceLoad {
+  public abstract class CronJob<T> : AModul<T>, IForceLoad {
     protected readonly List<Tuple<String, Action<Object>, Object>> internalCron = new List<Tuple<String, Action<Object>, Object>>();
     protected Thread thread;
+    protected Boolean threadRunning = false;
     protected DateTime crontime;
 
     protected readonly Dictionary<String, String> cron_named = new Dictionary<String, String> {
@@ -24,14 +26,18 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     public CronJob(T lib, InIReader settings) : base(lib, settings) {
       this.crontime = DateTime.Now;
       this.thread = new Thread(this.Runner);
+      this.threadRunning = true;
       this.thread.Start();
     }
     #endregion
 
     #region Cronjobrunner
     protected void Runner() {
-      Thread.Sleep(DateTime.Now.AddMinutes(1).AddSeconds(DateTime.Now.Second * -1).AddMilliseconds(DateTime.Now.Millisecond * -1) - DateTime.Now);
-      while (true) {
+      DateTime nextminute = DateTime.Now.AddMinutes(1).AddSeconds(DateTime.Now.Second * -1).AddMilliseconds(DateTime.Now.Millisecond * -1);
+      while(nextminute > DateTime.Now && this.threadRunning) {
+        Thread.Sleep(100);
+      }
+      while (this.threadRunning) {
         if (this.crontime.Minute != DateTime.Now.Minute) {
           this.crontime = DateTime.Now;
           if (this.config.Count != 0) {
@@ -143,27 +149,13 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
     public override void SetInterconnection(String cron, Action<Object> hook, Object data) => this.internalCron.Add(new Tuple<String, Action<Object>, Object>(cron, hook, data));
 
     protected override void UpdateConfig() { }
-    #endregion
-
-    #region IDisposable Support
-    private Boolean disposedValue = false;
-
-    protected virtual void Dispose(Boolean disposing) {
-      if (!this.disposedValue) {
-        if (disposing) {
-          if (this.thread != null) {
-            this.thread.Abort();
-            while (this.thread.ThreadState == ThreadState.Running) { Thread.Sleep(100); }
-          }
-        }
-        this.thread = null;
-        this.disposedValue = true;
-      }
-    }
 
     public override void Dispose() {
-      this.Dispose(true);
-      GC.SuppressFinalize(this);
+      this.threadRunning = false;
+      while(this.thread != null && this.thread.IsAlive) {
+        Thread.Sleep(10);
+      }
+      this.thread = null;
     }
     #endregion
   }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BlubbFish.Utils.IoT.Bots.Interfaces;
 
 namespace BlubbFish.Utils.IoT.Bots.Moduls {
-  public abstract class Statuspolling<T> : AModul<T>, IDisposable, IForceLoad {
+  public abstract class Statuspolling<T> : AModul<T>, IForceLoad {
 
     #region Constructor
     public Statuspolling(T lib, InIReader settings) : base(lib, settings) { }
@@ -31,22 +31,7 @@ namespace BlubbFish.Utils.IoT.Bots.Moduls {
       }
     }
     protected override void UpdateConfig() { }
-    #endregion
-
-    #region IDisposable Support
-    private Boolean disposedValue = false;
-
-    protected virtual void Dispose(Boolean disposing) {
-      if (!this.disposedValue) {
-        if (disposing) {
-        }
-        this.disposedValue = true;
-      }
-    }
-
     public override void Dispose() {
-      this.Dispose(true);
-      GC.SuppressFinalize(this);
     }
     #endregion
   }

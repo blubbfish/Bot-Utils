@@ -11,6 +11,7 @@ namespace BlubbFish.Utils.IoT.Bots {
 
     protected void ModulDispose() {
       foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
+        Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulDispose: Entlade Modul: " + item.Key);
         item.Value.Dispose();
         Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulDispose: Modul entladen: " + item.Key);
       }
