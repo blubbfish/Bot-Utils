@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using BlubbFish.Utils.IoT.Connector;
 
 namespace BlubbFish.Utils.IoT.Bots {
@@ -10,7 +8,7 @@ namespace BlubbFish.Utils.IoT.Bots {
     protected Dictionary<String, ABackend> sources;
     protected Dictionary<String, String> settings;
 
-    protected MultiSourceBot(Dictionary<String, ABackend> sources, Dictionary<String, String> settings) {
+    protected MultiSourceBot(String[] args, Boolean fileLogging, String configSearchPath, Dictionary<String, ABackend> sources, Dictionary<String, String> settings) : base(args, fileLogging, configSearchPath) {
       this.sources = sources;
       this.settings = settings;
     }

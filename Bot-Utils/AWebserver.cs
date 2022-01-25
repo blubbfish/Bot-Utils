@@ -12,7 +12,7 @@ namespace BlubbFish.Utils.IoT.Bots {
     
     protected HttpListener httplistener;
 
-    public AWebserver(Dictionary<String, String> settings) => this.config = settings;
+    public AWebserver(String[] args, Boolean fileLogging, String configSearchPath, Dictionary<String, String> settings) : base(args, fileLogging, configSearchPath) => this.config = settings;
 
     protected void StartListen() {
       this.httplistener = new HttpListener();

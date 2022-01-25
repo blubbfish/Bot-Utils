@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.6 - 2022-01-25 - Makeing Logging easyier
+### New Features
+* Construct the Programm logger only if enabled
+* Set Searchpath by default for a Bot
+* Add an option that allows to debug logging (by default on)
+### Bugfixes
+### Changes
+* Deconstruct Programmlogger
+* Change all classes that extend ABot
+* Module messages also uses debug logging flag
+* Codingstyles
+
 ## 1.2.5 - 2022-01-20 - Better linux handling
 ### New Features
 * Add ProcessExit Handler in ABot

@@ -5,17 +5,18 @@
     <RootNamespace>BlubbFish.Utils.IoT.Bots</RootNamespace>
     <AssemblyName>Bot-Utils</AssemblyName>
     <PackageId>Bots.IoT.Utils.BlubbFish</PackageId>
-    <Version>1.2.5</Version>
+    <Version>1.2.6</Version>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <Description>Bot-Utils are helpers for programming a bot</Description>
     <Authors>BlubbFish</Authors>
     <Company>BlubbFish</Company>
-    <Copyright>Copyright © BlubbFish 2018 - 20.01.2022</Copyright>
+    <Copyright>Copyright © BlubbFish 2018 - 25.01.2022</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>http://git.blubbfish.net/vs_utils/Bot-Utils</PackageProjectUrl>
     <RepositoryUrl>http://git.blubbfish.net/vs_utils/Bot-Utils.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>
+      1.2.6 - 2022-01-25 - Makeing Logging easyier
       1.2.5 - 2022-01-20 - Better linux handling
       1.2.4 - 2022-01-18 - Config enabled module loading
       1.2.3 - 2022-01-09 - Tiny Refactoring

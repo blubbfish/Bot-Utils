@@ -7,7 +7,7 @@ using BlubbFish.Utils.IoT.Events;
 namespace BlubbFish.Utils.IoT.Bots {
   public abstract class AWebserverDataBackend : AWebserver {
     protected ABackend databackend;
-    protected AWebserverDataBackend(ABackend backend, Dictionary<String, String> settings) : base(settings) => this.databackend = backend;
+    protected AWebserverDataBackend(String[] args, Boolean fileLogging, String configSearchPath, ABackend backend, Dictionary<String, String> settings) : base(args, fileLogging, configSearchPath, settings) => this.databackend = backend;
 
     protected void StartDataBackend() => this.databackend.MessageIncomming += this.Backend_MessageIncomming;
 

@@ -9,6 +9,8 @@ namespace BlubbFish.Utils.IoT.Bots {
   public abstract class Bot<T> : ABot {
     protected readonly Dictionary<String, AModul<T>> moduls = new Dictionary<String, AModul<T>>();
 
+    public Bot(String[] args, Boolean fileLogging, String configSearchPath) : base(args, fileLogging, configSearchPath) { }
+
     protected void ModulDispose() {
       foreach (KeyValuePair<String, AModul<T>> item in this.moduls) {
         Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.ModulDispose: Entlade Modul: " + item.Key);
@@ -61,6 +63,10 @@ namespace BlubbFish.Utils.IoT.Bots {
       }
     }
 
-    protected void ModulUpdate(Object sender, ModulEventArgs e) => Console.WriteLine(e.ToString());
+    protected void ModulUpdate(Object sender, ModulEventArgs e) {
+      if(this.DebugLogging) {
+        Console.WriteLine(e.ToString());
+      }
+    }
   }
 }

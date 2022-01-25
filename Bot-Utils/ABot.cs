@@ -1,12 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading;
 
 namespace BlubbFish.Utils.IoT.Bots {
   public abstract class ABot {
     private Boolean RunningProcess = true;
+    private readonly ProgramLogger logger = null;
 
-    protected ProgramLogger logger = new ProgramLogger();
+    public Boolean DebugLogging {
+      get;
+    }
+
+    public ABot(String[] _, Boolean fileLogging, String configSearchPath) {
+      InIReader.SetSearchPath(new List<String>() { "/etc/"+ configSearchPath, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\"+ configSearchPath });
+      if(fileLogging) {
+        this.logger = new ProgramLogger(InIReader.GetInstance("settings").GetValue("logging", "path", Assembly.GetEntryAssembly().GetName().Name + ".log"));
+      }
+      if(Boolean.TryParse(InIReader.GetInstance("settings").GetValue("logging", "debug", "true"), out Boolean debuglog)) {
+        this.DebugLogging = debuglog;
+      }
+    }
 
     private void ConsoleCancelEvent(Object sender, ConsoleCancelEventArgs e) {
       e.Cancel = true;
@@ -37,6 +52,7 @@ namespace BlubbFish.Utils.IoT.Bots {
     public virtual void Dispose() {
       Console.WriteLine("BlubbFish.Utils.IoT.Bots.Bot.Dispose: Shutdown.");
       this.RunningProcess = false;
+      this.logger?.Dispose();
     }
   }
 }
